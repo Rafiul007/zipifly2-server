@@ -5,8 +5,6 @@ const app = express();
 const port = 3002;
 
 
-
-
 app.use(cors({ origin: true, credentials: true }));
 
 // use the body-parser middleware to parse JSON and URL-encoded data
