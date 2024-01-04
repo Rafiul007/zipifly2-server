@@ -1,9 +1,9 @@
 const mongoose = require("mongoose");
 const userSchema = new mongoose.Schema({
-//   fullname: {
-//     type: String,
-//     required: true,
-//   },
+  fullname: {
+    type: String,
+    required: true,
+  },
   username: {
     type: String,
     required: true,
@@ -18,14 +18,14 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-//   address: {
-//     type: String,
-//     required: true,
-//   },
-//   contactNumber: {
-//     type: String,
-//     required: true,
-//   },
+  //   address: {
+  //     type: String,
+  //     required: true,
+  //   },
+  contactNumber: {
+    type: String,
+    required: true,
+  },
   parcels_sent: [
     {
       type: mongoose.Schema.Types.ObjectId,
