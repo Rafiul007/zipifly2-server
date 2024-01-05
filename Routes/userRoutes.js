@@ -70,13 +70,13 @@ router.post("/login", async (req, res) => {
 });
 
 //user profile data
-router.get("/profile/:userId", authGuard, async (req, res) => {
+router.get("/profile/:userId",authGuard, async (req, res) => {
   const userId = req.params.userId;
   // if (userId !== req.userId) {
   //   return res.status(403).json({ message: "Forbidden!" });
   // } else {
   try {
-    const userData = await User.findById(userId, "-password");
+    const userData = await User.findById(userId);
     if (!userData) {
       return res.status(404).json({ message: "User not found." });
     }
@@ -90,7 +90,7 @@ router.get("/profile/:userId", authGuard, async (req, res) => {
 //test
 router.get("/profile", async (req, res) => {
   res.json({
-    message: "Hello. this is profile",
+    message: "Hello. this is profile, Testing testing",
   });
 });
 
