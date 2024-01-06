@@ -78,6 +78,6 @@ router.get("/:id", authGuard, async (req, res) => {
   
 });
 
-// GET method: get a specific
+
 
 module.exports = router;
