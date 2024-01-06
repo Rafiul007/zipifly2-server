@@ -6,7 +6,7 @@ const User = require("../Model/user.model");
 const jwt = require("jsonwebtoken");
 const authGuard = require("../Middleware/authGuard");
 
-//route to create a parcel in DB
+//route to create a parcel in DB -.-.-.-.-.-.-.-.-.-.-.-.-.-.-..-.-.-.-.-.-.-.-.-.-.-.
 router.post("/", authGuard, async (req, res) => {
   //validate the request body fields
   try {
@@ -55,4 +55,29 @@ router.post("/", authGuard, async (req, res) => {
     });
   }
 });
+
+// get method: Get parcel details
+router.get("/:id", authGuard, async (req, res) => {
+  try {
+    const parcel = await Parcel.findById(req.params.id)
+      .populate({
+        path: "sender",
+        select: "username email contactNumber fullname", // Specify the fields you want to include
+      })
+      .populate({
+        path: "receiver",
+        select: "username email contactNumber fullname", // Specify the fields you want to include
+      })
+      .exec();
+    if (!parcel) throw new Error("No parcel with that id found");
+    return res.status(200).json(parcel);
+  } catch (err) {
+    console.log(err);
+    return res.status(404).json({ message: err.message });
+  }
+  
+});
+
+// GET method: get a specific
+
 module.exports = router;

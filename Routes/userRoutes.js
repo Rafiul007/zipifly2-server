@@ -9,7 +9,7 @@ const secretKey = "rafiul"; // give it .env file letter for protection
 // Function to generate a username with 3 random numbers
 function generateUsername(name) {
   // Remove spaces from the name
-  const nameWithoutSpaces = name.replace(/\s/g, '');
+  const nameWithoutSpaces = name.replace(/\s/g, "");
   // Generate 3 random numbers between 100 and 999
   const randomNumbers = Math.floor(100 + Math.random() * 900);
   // Concatenate the formatted name and random numbers to form the username
@@ -20,7 +20,7 @@ function generateUsername(name) {
 router.post("/", async (req, res) => {
   try {
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
-    const generatedUsername = generateUsername(req.body.fullname)
+    const generatedUsername = generateUsername(req.body.fullname);
     User.create({
       fullname: req.body.fullname,
       username: generatedUsername,
@@ -55,7 +55,7 @@ router.post("/login", async (req, res) => {
     const token = jwt.sign(
       { userId: user._id, userName: user.username },
       secretKey,
-      { expiresIn: "1h" }
+      { expiresIn: "10h" }
     );
     res.status(200).json({
       token,
@@ -70,7 +70,7 @@ router.post("/login", async (req, res) => {
 });
 
 //user profile data
-router.get("/profile/:userId",authGuard, async (req, res) => {
+router.get("/profile/:userId", authGuard, async (req, res) => {
   const userId = req.params.userId;
   // if (userId !== req.userId) {
   //   return res.status(403).json({ message: "Forbidden!" });
@@ -86,6 +86,29 @@ router.get("/profile/:userId",authGuard, async (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
   // }
+});
+// GET method:  all the parcel of a specific user who is logged in
+router.get("/parcels", authGuard, async (req, res) => {
+  let userId = req.userId; // userId to find his parcels only
+  // Find all parcels where either sender or receiver is the specified user
+  try {
+    const userParcels = await Parcel.find({
+      $or: [{ sender: userId }, { receiver: userId }],
+    })
+      .populate({
+        path: "sender",
+        select: "username email", // Specify the fields you want to include from sender
+      })
+      .populate({
+        path: "receiver",
+        select: "username email", // Specify the fields you want to include from receiver
+      })
+      .exec();
+
+    res.status(200).json(userParcels);
+  } catch (error) {
+    console.log("Parcel Error", error);
+  }
 });
 //test
 router.get("/profile", async (req, res) => {
