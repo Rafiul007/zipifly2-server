@@ -31,5 +31,5 @@ const parcelSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-});
+},{ timestamps: true });
 module.exports = Parcel = mongoose.model("Parcel", parcelSchema);

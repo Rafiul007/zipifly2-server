@@ -27,7 +27,8 @@ router.post("/", async (req, res) => {
       password: hashedPassword,
       email: req.body.email,
       contactNumber: req.body.contactNumber,
-      //   address: req.body.address,
+      address: req.body.address,
+      district: req.body.district,
     });
     res.status(201).json({
       message: "User created successfully!",
