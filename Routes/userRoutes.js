@@ -73,9 +73,6 @@ router.post("/login", async (req, res) => {
 //user profile data
 router.get("/profile/:userId", authGuard, async (req, res) => {
   const userId = req.params.userId;
-  // if (userId !== req.userId) {
-  //   return res.status(403).json({ message: "Forbidden!" });
-  // } else {
   try {
     const userData = await User.findById(userId);
     if (!userData) {
@@ -89,20 +86,19 @@ router.get("/profile/:userId", authGuard, async (req, res) => {
   // }
 });
 // GET method:  all the parcel of a specific user who is logged in
-router.get("/parcels", authGuard, async (req, res) => {
-  let userId = req.userId; // userId to find his parcels only
-  // Find all parcels where either sender or receiver is the specified user
+router.get("/parcels/:userId", authGuard, async (req, res) => {
+  const userId = req.params.userId;
   try {
     const userParcels = await Parcel.find({
       $or: [{ sender: userId }, { receiver: userId }],
     })
       .populate({
         path: "sender",
-        select: "username email", // Specify the fields you want to include from sender
+        select: "username email address district contactNumber", // Specify the fields you want to include from sender
       })
       .populate({
         path: "receiver",
-        select: "username email", // Specify the fields you want to include from receiver
+        select: "username email address district contactNumber", // Specify the fields you want to include from receiver
       })
       .exec();
 
