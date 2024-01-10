@@ -7,7 +7,6 @@ const authGuard = (req, res, next) => {
     const {userName, userId} = decoded;
     req.username = userName;
     req.userId = userId;
-    // req.userData = decoded;
     next();
   } catch (error) {
     console.log("Error msg", error);

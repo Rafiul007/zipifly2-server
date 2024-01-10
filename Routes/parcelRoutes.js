@@ -28,9 +28,7 @@ router.post("/", authGuard, async (req, res) => {
     let recUser = await User.findOne({ username: req.body.receiver }); //receive er username jeta pabo oita diye search kortisi
     if (!recUser) throw new Error("Receiver does not exist!");
     let recUserId = recUser._id;
-    // parcelsSchema has sender and receiver ids.
-    //need to save and populate sender and receiver in parcel
-    // Create a new parcel
+
     const newParcel = await Parcel.create({
       sender: sendUserId,
       receiver: recUserId,
@@ -75,9 +73,29 @@ router.get("/:id", authGuard, async (req, res) => {
     console.log(err);
     return res.status(404).json({ message: err.message });
   }
-  
 });
-
-
+//delete a parcel by id where username is sender username
+router.delete("/delete/:parcelId", authGuard, async (req, res) => {
+  try {
+    let user = await User.findById(req.userId, "username").exec();
+    if (!user) {
+      throw new Error("Unauthorized");
+    }
+    const deletedParcel = await Parcel.findOneAndDelete({
+      _id: req.params.parcelId,
+      sender: req.userId,
+    }).exec();
+    if (!deletedParcel)
+      throw new Error(
+        "No such parcel exists or You are not authorised to delete this parcel."
+      );
+    else {
+      return res.status(200).json({ message: "Successfully Deleted" });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(400).json({ message: error.message });
+  }
+});
 
 module.exports = router;
