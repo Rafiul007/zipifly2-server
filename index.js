@@ -7,6 +7,7 @@ const mongodb = require("./config/connection");
 const userRoutes = require("./Routes/userRoutes");
 const parcelRoutes = require("./Routes/parcelRoutes");
 const deliverymanRoutes = require("./Routes/deliverymanRoutes");
+const orderRoutes = require("./Routes/orderRoutes");
 app.use(cors({ origin: true, credentials: true }));
 
 // use the body-parser middleware to parse JSON and URL-encoded data
@@ -16,4 +17,5 @@ mongodb();
 app.use("/user", userRoutes);
 app.use("/parcel", parcelRoutes);
 app.use("/deliveryman", deliverymanRoutes);
+app.use("/orders", orderRoutes);
 app.listen(port, () => console.log(`Server running on port ${port}`));
