@@ -4,7 +4,7 @@ const router = express.Router();
 const User = require("../Model/user.model");
 const jwt = require("jsonwebtoken");
 const authGuard = require("../Middleware/authGuard");
-const secretKey = "rafiul"; // give it .env file letter for protection
+const secretKey = "user"; // give it .env file letter for protection
 
 // Function to generate a username with 3 random numbers
 function generateUsername(name) {
