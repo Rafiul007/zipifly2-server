@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const secretKey = "rafiul";
+const secretKey = "user";
 const authGuard = (req, res, next) => {
   try {
     const token = req.headers.authorization.split(' ')[1];
@@ -10,7 +10,7 @@ const authGuard = (req, res, next) => {
     next();
   } catch (error) {
     console.log("Error msg", error);
-    next("Authentication failure");
+    next("Authentication failure test");
   }
 };
 module.exports = authGuard;

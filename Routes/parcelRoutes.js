@@ -87,6 +87,9 @@ router.delete("/delete/:parcelId", authGuard, async (req, res) => {
       _id: req.params.parcelId,
       sender: req.userId,
     }).exec();
+    const deletedOrder = await Order.findOneAndDelete({
+      parcel: req.params.parcelId,
+    }).exec();
     if (!deletedParcel)
       throw new Error(
         "No such parcel exists or You are not authorised to delete this parcel."
