@@ -19,12 +19,14 @@ const orderSchema = new mongoose.Schema(
     deliveryman: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Deliveryman",
-      required: true,
-      default: "none",
+      default: null,
     },
     pickupDate: {
       type: Date,
       required: false,
+    },
+    totalCash:{
+      type: Number,
     },
     dropDate: {
       type: Date,

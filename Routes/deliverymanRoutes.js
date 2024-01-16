@@ -26,6 +26,7 @@ router.post("/", async (req, res) => {
       contactNumber: req.body.contactNumber,
       username: generatedUsername,
       password: hashedPassword,
+      email: req.body.email
     });
     res.status(201).json({
       message: "Account created successfully!",
@@ -37,3 +38,35 @@ router.post("/", async (req, res) => {
     });
   }
 });
+
+//deliveryman login routes
+router.post("/login", async (req, res) => {
+    try {
+      const { email, password } = req.body;
+      const user = await Deliveryman.findOne({ email });
+      if (!user) {
+        return res.status(401).json({ message: "Invalid Email or Password" });
+      }
+      const isValidPass = await bcrypt.compare(password, user.password);
+      if (!isValidPass) {
+        return res.status(401).json({ message: "Invalid Email or Password" });
+      }
+      //creating jwt token
+      const token = jwt.sign(
+        { userId: user._id, userName: user.username },
+        secretKey,
+        { expiresIn: "10h" }
+      );
+      res.status(200).json({
+        token,
+        userId: user._id,
+        userName: user.username,
+        message: "Logged in Successfully!",
+      });
+    } catch (error) {
+      console.log("Error in Login : ", error);
+      res.status(400).json({ message: "Server Error" });
+    }
+  });
+
+module.exports = router;
