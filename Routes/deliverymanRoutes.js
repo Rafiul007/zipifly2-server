@@ -5,7 +5,9 @@ const secretKey = "deliveryman";
 const router = express.Router();
 const Deliveryman = require("../Model/deliverMan.model");
 const Order = require("../Model/order.model");
+const Parcel = require("../Model/parcel.model");
 const authDeliveryman = require("../Middleware/authDeliveryman");
+const { ObjectId } = require("mongoose").Types;
 // Function to generate a username for deliveryman with 3 random numbers
 function generateUsername(name) {
   // Remove spaces from the name
@@ -85,7 +87,6 @@ router.put("/accept/:orderId", authDeliveryman, async (req, res) => {
     }
     // Update order's deliveryman and set pickupDate
     order.deliveryman = req.userId;
-    order.pickupDate = new Date();
     // order.status = "Picked up";
     await order.save();
     // Add the order to the deliveryman's orders array
@@ -95,6 +96,53 @@ router.put("/accept/:orderId", authDeliveryman, async (req, res) => {
 
     res.status(200).json({ message: "Order accepted successfully" });
   } catch (error) {}
+});
+
+router.put("/pickup/:orderId", authDeliveryman, async (req, res) => {
+  try {
+    const orderId = req.params.orderId;
+    let order = await Order.findById(orderId);
+    if (!order) {
+      throw new Error();
+    }
+    const parcelId = order.parcel;
+    let parcel = await Parcel.findById(parcelId);
+    // Check if the order is already accepted by another deliveryman
+    if (order.deliveryman.equals(new ObjectId(req.userId)) && order.status==="Pending") {
+      order.status = "Picked up";
+      order.pickupDate = new Date();
+      parcel.status = "Picked up";
+      await order.save();
+      await parcel.save();
+      return res.status(200).json({ message: "Parcel Pickedup" });
+    }
+  } catch (error) {
+    console.log("testing error", error);
+  }
+});
+router.put("/delivered/:orderId", authDeliveryman, async (req, res) => {
+  try {
+    const orderId = req.params.orderId;
+    let order = await Order.findById(orderId);
+    if (!order) {
+      throw new Error();
+    }
+    const parcelId = order.parcel;
+    let parcel = await Parcel.findById(parcelId);
+    // Check if the order is already accepted by another deliveryman
+    if (order.deliveryman.equals(new ObjectId(req.userId)) && order.status==="Picked up") {
+      order.status = "Delivered";
+      order.dropDate = new Date();
+      parcel.status = "Delivered";
+      await order.save();
+      await parcel.save();
+      return res.status(200).json({ message: "Delivered" });
+    }else{
+      return res.status(400).json({ message: "Already delivered" });
+    }
+  } catch (error) {
+    console.log("testing error", error);
+  }
 });
 
 module.exports = router;
