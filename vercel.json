@@ -1,9 +1,14 @@
 {
   "version": 2,
-  "name": "zipifly",
-  "builds": [{ "src": "./index.js", "use": "@vercel/node" }],
+  "name": "your-project-name",
+  "builds": [
+    { "src": "./index.js", "use": "@vercel/node" }
+  ],
   "routes": [
-    { "src": "/users", "dest": "./server/routes/userRoutes.js" },
-    { "src": "/orders", "dest": "./Routes/orderRoutes.js" }
+    { "src": "/", "dest": "./*" },
+    { "src": "/user", "dest": "./Routes/userRoutes" },
+    { "src": "/parcel", "dest": "./Routes/parcelRoutes" },
+    { "src": "/deliveryman", "dest": "./Routes/deliverymanRoutes" },
+    { "src": "/orders", "dest": "./Routes/orderRoutes" }
   ]
 }
