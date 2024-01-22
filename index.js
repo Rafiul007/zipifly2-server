@@ -14,11 +14,12 @@ app.use(cors({ origin: true, credentials: true }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 mongodb();
-app.get('*',(req,res,next)=>{
-    res.status(200).json({
-      message:'server running'
-    })
-  })
+app.get('/', (req, res) => {
+    res.send('products api running new deploy');
+});
+app.get('/ping', (req, res) => {
+    res.send('PONG')
+});
 app.use("/user", userRoutes);
 app.use("/parcel", parcelRoutes);
 app.use("/deliveryman", deliverymanRoutes);
