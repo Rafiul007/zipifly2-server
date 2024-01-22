@@ -14,11 +14,8 @@ app.use(cors({ origin: true, credentials: true }));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 mongodb();
-app.get('*',(req,res,next)=>{
-    res.status(200).json({
-      message:'bad request'
-    })
-  })
+// default catch all handler
+app.all('*', (req, res) => res.status(404).json(new ErrorResponseObject('route not defined')));
 app.use("/user", userRoutes);
 app.use("/parcel", parcelRoutes);
 app.use("/deliveryman", deliverymanRoutes);
