@@ -3,6 +3,7 @@ const secretKey = "deliveryman";
 
 const authDeliveryman = (req, res, next) => {
   try {
+    console.log(req.headers)
     const token = req.headers.authorization.split(" ")[1];
     if (!token)
       return res
@@ -15,7 +16,7 @@ const authDeliveryman = (req, res, next) => {
     next();
   } catch (error) {
     console.log("Error msg", error);
-    next("Authentication failure");
+    next("Authentication failure 2");
   }
 };
 

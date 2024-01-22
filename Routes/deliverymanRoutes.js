@@ -108,7 +108,10 @@ router.put("/pickup/:orderId", authDeliveryman, async (req, res) => {
     const parcelId = order.parcel;
     let parcel = await Parcel.findById(parcelId);
     // Check if the order is already accepted by another deliveryman
-    if (order.deliveryman.equals(new ObjectId(req.userId)) && order.status==="Pending") {
+    if (
+      order.deliveryman.equals(new ObjectId(req.userId)) &&
+      order.status === "Pending"
+    ) {
       order.status = "Picked up";
       order.pickupDate = new Date();
       parcel.status = "Picked up";
@@ -120,6 +123,21 @@ router.put("/pickup/:orderId", authDeliveryman, async (req, res) => {
     console.log("testing error", error);
   }
 });
+// GET    /profile  to get a deliveryman profile
+router.get("/profile/:userId", authDeliveryman, async (req, res) => {
+  const userId = req.params.userId;
+  try {
+    const delierymanData = await Deliveryman.findById(userId);
+    if (!delierymanData) {
+      return res.status(401).json({ message: "User not found! 1" });
+    }
+    res.status(200).json(delierymanData);
+  } catch (error) {
+    console.log("testing: ",error)
+    return res.status(401).json({ message: "User not found! 2" });
+  }
+});
+
 router.put("/delivered/:orderId", authDeliveryman, async (req, res) => {
   try {
     const orderId = req.params.orderId;
@@ -130,14 +148,17 @@ router.put("/delivered/:orderId", authDeliveryman, async (req, res) => {
     const parcelId = order.parcel;
     let parcel = await Parcel.findById(parcelId);
     // Check if the order is already accepted by another deliveryman
-    if (order.deliveryman.equals(new ObjectId(req.userId)) && order.status==="Picked up") {
+    if (
+      order.deliveryman.equals(new ObjectId(req.userId)) &&
+      order.status === "Picked up"
+    ) {
       order.status = "Delivered";
       order.dropDate = new Date();
       parcel.status = "Delivered";
       await order.save();
       await parcel.save();
       return res.status(200).json({ message: "Delivered" });
-    }else{
+    } else {
       return res.status(400).json({ message: "Already delivered" });
     }
   } catch (error) {
