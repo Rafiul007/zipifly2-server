@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const db = 'mongodb://127.0.0.1:27017/zipiflyTest'
+const db = 'mongodb+srv://rafiulfaisal:TiRe7BAvyeT2291h@zipifly.9chbgrz.mongodb.net/?retryWrites=true&w=majority'
 
 const conn = () =>{
     try{
@@ -10,3 +10,4 @@ const conn = () =>{
     }
 }
 module.exports=conn;
+// rafiulfaisal TiRe7BAvyeT2291h
