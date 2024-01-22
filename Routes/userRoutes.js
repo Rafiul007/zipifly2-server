@@ -108,7 +108,7 @@ router.get("/parcels/:userId", authGuard, async (req, res) => {
   }
 });
 //test
-router.get("/profile", async (req, res) => {
+router.get("/", async (req, res) => {
   res.json({
     message: "Hello. this is profile, Testing testing",
   });

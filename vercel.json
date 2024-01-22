@@ -2,5 +2,8 @@
   "version": 2,
   "name": "zipifly",
   "builds": [{ "src": "./index.js", "use": "@vercel/node" }],
-  "routes": [{ "src": "/(.*)", "dest": "/" }]
+  "routes": [
+    { "src": "/users", "dest": "./server/routes/userRoutes.js" },
+    { "src": "/orders", "dest": "./Routes/orderRoutes.js" }
+  ]
 }
