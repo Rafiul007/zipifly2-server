@@ -42,17 +42,7 @@ router.post("/", async (req, res) => {
     });
   }
 });
-// testing
-userRoutes.post('/testing', async (req, res) => {
-  try {
-      // Your code to save data to MongoDB
 
-      res.status(201).json({ message: 'Data created successfully' });
-  } catch (error) {
-      console.error(error);
-      res.status(500).json({ message: 'Internal Server Error' });
-  }
-});
 
 //user login routes
 router.post("/login", async (req, res) => {
