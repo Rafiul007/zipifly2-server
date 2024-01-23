@@ -17,31 +17,31 @@ function generateUsername(name) {
   return username;
 }
 // user signup routes
-router.post("/", async (req, res) => {
-  try {
-    const hashedPassword = await bcrypt.hash(req.body.password, 10);
-    const generatedUsername = generateUsername(req.body.fullname);
-    await User.create({
-      fullname: req.body.fullname,
-      username: generatedUsername,
-      password: hashedPassword,
-      email: req.body.email,
-      contactNumber: req.body.contactNumber,
-      address: req.body.address,
-      district: req.body.district,
-    });
-    res.status(201).json({
-      message: "User created successfully!",
-      fullname: req.body.fullname,
-      username: generatedUsername,
-    });
-  } catch (err) {
-    console.log("error: ",err)
-    res.status(500).json({
-      message: "Something went wrong",
-    });
-  }
-});
+// router.post("/", async (req, res) => {
+//   try {
+//     const hashedPassword = await bcrypt.hash(req.body.password, 10);
+//     const generatedUsername = generateUsername(req.body.fullname);
+//     await User.create({
+//       fullname: req.body.fullname,
+//       username: generatedUsername,
+//       password: hashedPassword,
+//       email: req.body.email,
+//       contactNumber: req.body.contactNumber,
+//       address: req.body.address,
+//       district: req.body.district,
+//     });
+//     res.status(201).json({
+//       message: "User created successfully!",
+//       fullname: req.body.fullname,
+//       username: generatedUsername,
+//     });
+//   } catch (err) {
+//     console.log("error: ",err)
+//     res.status(500).json({
+//       message: "Something went wrong",
+//     });
+//   }
+// });
 
 
 //user login routes
