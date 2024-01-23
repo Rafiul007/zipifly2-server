@@ -21,8 +21,8 @@ app.get('/', (req, res) => {
 app.get('/ping', (req, res) => {
     res.send('PONG')
 });
-app.use("/user", userRoutes);
-app.use("/parcel", parcelRoutes);
-app.use("/deliveryman", deliverymanRoutes);
-app.use("/orders", orderRoutes);
+// app.use("/user", userRoutes);
+// app.use("/parcel", parcelRoutes);
+// app.use("/deliveryman", deliverymanRoutes);
+// app.use("/orders", orderRoutes);
 app.listen(port, () => console.log(`Server running on port ${port}`));
