@@ -13,6 +13,7 @@ require('dotenv').config();
 // use the body-parser middleware to parse JSON and URL-encoded data
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
 mongodb();
 app.get('/', (req, res) => {
     res.send('products api running new deploy');
