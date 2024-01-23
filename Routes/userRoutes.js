@@ -36,9 +36,21 @@ router.post("/", async (req, res) => {
       username: generatedUsername,
     });
   } catch (err) {
+    console.log("error: ",err)
     res.status(500).json({
       message: "Something went wrong",
     });
+  }
+});
+// testing
+userRoutes.post('/testing', async (req, res) => {
+  try {
+      // Your code to save data to MongoDB
+
+      res.status(201).json({ message: 'Data created successfully' });
+  } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Internal Server Error' });
   }
 });
 
