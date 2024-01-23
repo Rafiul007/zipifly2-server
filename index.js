@@ -9,7 +9,7 @@ const parcelRoutes = require("./Routes/parcelRoutes");
 const deliverymanRoutes = require("./Routes/deliverymanRoutes");
 const orderRoutes = require("./Routes/orderRoutes");
 app.use(cors({ origin: true, credentials: true }));
-
+require('dotenv').config();
 // use the body-parser middleware to parse JSON and URL-encoded data
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));

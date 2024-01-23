@@ -3,7 +3,7 @@ const db = 'mongodb+srv://rafiulfaisal:TiRe7BAvyeT2291h@zipifly.9chbgrz.mongodb.
 
 const conn = () =>{
     try{
-        mongoose.connect(db)
+        mongoose.connect(process.env.MONGODB_URI)
         console.log("DB connected")
     }catch(err){
         console.log(err)
