@@ -32,6 +32,8 @@ router.post("/", async (req, res) => {
     });
     res.status(201).json({
       message: "User created successfully!",
+      fullname: req.body.fullname,
+      username: generatedUsername,
     });
   } catch (err) {
     res.status(500).json({
