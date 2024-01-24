@@ -4,11 +4,16 @@ const router = express.Router();
 const User = require("../Model/user.model");
 const jwt = require("jsonwebtoken");
 const authGuard = require("../Middleware/authGuard");
+const { default: rateLimit } = require("express-rate-limit");
 const secretKey = "user"; // give it .env file letter for protection
+
+
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
   max: 5, // limit each IP to 5 requests per windowMs
 });
+
+
 // Function to generate a username with 3 random numbers
 function generateUsername(name) {
   // Remove spaces from the name
