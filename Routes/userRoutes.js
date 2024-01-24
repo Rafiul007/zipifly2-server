@@ -5,7 +5,10 @@ const User = require("../Model/user.model");
 const jwt = require("jsonwebtoken");
 const authGuard = require("../Middleware/authGuard");
 const secretKey = "user"; // give it .env file letter for protection
-
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 5, // limit each IP to 5 requests per windowMs
+});
 // Function to generate a username with 3 random numbers
 function generateUsername(name) {
   // Remove spaces from the name
@@ -17,31 +20,31 @@ function generateUsername(name) {
   return username;
 }
 // user signup routes
-// router.post("/", async (req, res) => {
-//   try {
-//     const hashedPassword = await bcrypt.hash(req.body.password, 10);
-//     const generatedUsername = generateUsername(req.body.fullname);
-//     await User.create({
-//       fullname: req.body.fullname,
-//       username: generatedUsername,
-//       password: hashedPassword,
-//       email: req.body.email,
-//       contactNumber: req.body.contactNumber,
-//       address: req.body.address,
-//       district: req.body.district,
-//     });
-//     res.status(201).json({
-//       message: "User created successfully!",
-//       fullname: req.body.fullname,
-//       username: generatedUsername,
-//     });
-//   } catch (err) {
-//     console.log("error: ",err)
-//     res.status(500).json({
-//       message: "Something went wrong",
-//     });
-//   }
-// });
+router.post("/",limiter, async (req, res) => {
+  try {
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    const generatedUsername = generateUsername(req.body.fullname);
+    await User.create({
+      fullname: req.body.fullname,
+      username: generatedUsername,
+      password: hashedPassword,
+      email: req.body.email,
+      contactNumber: req.body.contactNumber,
+      address: req.body.address,
+      district: req.body.district,
+    });
+    res.status(201).json({
+      message: "User created successfully!",
+      fullname: req.body.fullname,
+      username: generatedUsername,
+    });
+  } catch (err) {
+    console.log("error: ",err)
+    res.status(500).json({
+      message: "Something went wrong",
+    });
+  }
+});
 
 
 //user login routes
